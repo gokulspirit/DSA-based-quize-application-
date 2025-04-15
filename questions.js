@@ -86,7 +86,12 @@ const questions = [
   },
   {
     question: "What does AVL in AVL tree stand for?",
-    options: ["Adelson-Velsky and Landis", "Automatic Variable Length", "Advanced Value Lookup", "Array Vector List"],
+    options: [
+      "Adelson-Velsky and Landis",
+      "Automatic Variable Length",
+      "Advanced Value Lookup",
+      "Array Vector List"
+    ],
     answer: "Adelson-Velsky and Landis"
   },
   {
@@ -136,7 +141,12 @@ const questions = [
   },
   {
     question: "What is a complete binary tree?",
-    options: ["Every level is full", "All leaves at same level", "All nodes have 2 children", "Heap property maintained"],
+    options: [
+      "Every level is full",
+      "All leaves at same level",
+      "All nodes have 2 children",
+      "Heap property maintained"
+    ],
     answer: "Every level is full"
   },
   {
