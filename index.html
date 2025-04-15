@@ -1,162 +1,40 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DSA Quiz Application</title>
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
-    import { getFirestore, doc, setDoc, addDoc, collection } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";const firebaseConfig = {
-  apiKey: "AIzaSyBqjpKtYOMPpdp93nY-LQn569pw6c-CsbQ",
-  authDomain: "real-225f0.firebaseapp.com",
-  projectId: "real-225f0",
-  storageBucket: "real-225f0.appspot.com",
-  messagingSenderId: "333960580528",
-  appId: "1:333960580528:web:2fd8e0cf1eab6cdd909a75"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
-const db = getFirestore(app);
-
-const loginBtn = document.getElementById("login-btn");
-const logoutBtn = document.getElementById("logout-btn");
-const quizContainer = document.getElementById("quiz-container");
-const resultContainer = document.getElementById("result-container");
-const userInfo = document.getElementById("user-info");
-
-let currentUser = null;
-
-loginBtn.onclick = async () => {
-  try {
-    const result = await signInWithPopup(auth, provider);
-    currentUser = result.user;
-    userInfo.innerText = `Hello, ${currentUser.displayName}`;
-    quizContainer.style.display = "block";
-    loginBtn.style.display = "none";
-    logoutBtn.style.display = "inline";
-    loadQuiz();
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-logoutBtn.onclick = async () => {
-  await signOut(auth);
-  currentUser = null;
-  userInfo.innerText = "";
-  quizContainer.style.display = "none";
-  resultContainer.innerHTML = "";
-  loginBtn.style.display = "inline";
-  logoutBtn.style.display = "none";
-};
-
-onAuthStateChanged(auth, user => {
-  if (user) {
-    currentUser = user;
-    userInfo.innerText = `Welcome back, ${user.displayName}`;
-    quizContainer.style.display = "block";
-    loginBtn.style.display = "none";
-    logoutBtn.style.display = "inline";
-    loadQuiz();
-  }
-});
-
-// Sample quiz questions
-const questions = [
-  {
-    question: "What is the time complexity of binary search?",
-    options: ["O(n)", "O(log n)", "O(n log n)", "O(1)"],
-    answer: 1,
-    explanation: "Binary search divides the array in half each step, so it's O(log n)."
-  },
-  // Add more questions here...
-];
-
-let score = 0;
-let currentQuestion = 0;
-let timer;
-
-function loadQuiz() {
-  score = 0;
-  currentQuestion = 0;
-  resultContainer.innerHTML = "";
-  showQuestion();
-}
-
-function showQuestion() {
-  if (currentQuestion >= questions.length) {
-    showResult();
-    return;
-  }
-
-  const q = questions[currentQuestion];
-  quizContainer.innerHTML = `
-    <h3>${q.question}</h3>
-    <ul>
-      ${q.options.map((opt, idx) => `<li><button onclick="checkAnswer(${idx})">${opt}</button></li>`).join('')}
-    </ul>
-    <p id="explanation"></p>
-    <p id="timer">Time left: <span id="time">10</span> seconds</p>
-  `;
-
-  let timeLeft = 10;
-  clearInterval(timer);
-  timer = setInterval(() => {
-    if (--timeLeft <= 0) {
-      clearInterval(timer);
-      checkAnswer(-1);
-    } else {
-      document.getElementById("time").innerText = timeLeft;
-    }
-  }, 1000);
-}
-
-async function checkAnswer(index) {
-  clearInterval(timer);
-  const q = questions[currentQuestion];
-  const explanation = document.getElementById("explanation");
-  if (index === q.answer) {
-    score++;
-    explanation.innerText = "Correct! " + q.explanation;
-  } else {
-    explanation.innerText = "Incorrect! " + q.explanation;
-  }
-
-  setTimeout(() => {
-    currentQuestion++;
-    showQuestion();
-  }, 2000);
-}
-
-async function showResult() {
-  quizContainer.innerHTML = "";
-  resultContainer.innerHTML = `<h2>Your score: ${score}/${questions.length}</h2>`;
-
-  if (currentUser) {
-    try {
-      await addDoc(collection(db, "quizScores"), {
-        uid: currentUser.uid,
-        name: currentUser.displayName,
-        score,
-        total: questions.length,
-        timestamp: new Date()
-      });
-    } catch (err) {
-      console.error("Error saving score:", err);
-    }
-  }
-}
-
-  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DSA Quiz App</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
-  <h1>DSA Quiz App</h1>
-  <button id="login-btn">Sign in with Google</button>
-  <button id="logout-btn" style="display: none;">Sign Out</button>
-  <p id="user-info"></p>
-  <div id="quiz-container" style="display:none;"></div>
-  <div id="result-container"></div>
+  <div class="auth-section">
+    <button id="sign-in-btn">Sign In with Google</button>
+    <button id="sign-out-btn" style="display:none;">Sign Out</button>
+    <p id="user-info"></p>
+  </div>
+
+  <div class="toggle-theme">
+    <label>
+      <input type="checkbox" id="darkToggle"/> Dark Mode
+    </label>
+  </div>
+
+  <div class="quiz-box">
+    <h1>DSA Quiz App</h1>
+    <div class="timer">Time Left: <span id="time">15</span>s</div>
+    <div id="question-container">
+      <div id="question">Question here</div>
+      <div id="answer-buttons" class="btn-grid"></div>
+      <div id="explanation" class="explanation"></div>
+    </div>
+    <button id="next-btn">Next</button>
+    <button id="restart-btn" style="display:none;">Restart Quiz</button>
+  </div>
+
+  <script src="firebase-config.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
