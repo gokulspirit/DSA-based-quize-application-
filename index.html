@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DSA Quiz App</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <div class="quiz-container">
+    <div class="start-screen" id="start-screen">
+      <h1>DSA Quiz</h1>
+      <button onclick="startQuiz()">Start Quiz</button>
+    </div>
+
+    <div class="quiz-box" id="quiz-box" style="display:none;">
+      <div id="question-count"></div>
+      <div id="timer">Time Left: <span id="time">15</span>s</div>
+      <div id="question">Question text</div>
+      <div id="options"></div>
+      <button id="next-btn" onclick="nextQuestion()">Next</button>
+    </div>
+
+    <div class="result-box" id="result-box" style="display:none;">
+      <h2>Quiz Completed</h2>
+      <p id="score">Your Score: </p>
+      <button onclick="location.reload()">Try Again</button>
+    </div>
+  </div>
+
+  <script src="questions.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
