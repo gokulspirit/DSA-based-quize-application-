@@ -1,10 +1,10 @@
 const firebaseConfig = {
-  apiKey: "AIzaSyBqjpKtYOMPpdp93nY-LQn569pw6c-CsbQ",
-  authDomain: "real-225f0.firebaseapp.com",
-  projectId: "real-225f0",
-  storageBucket: "real-225f0.appspot.com",
-  messagingSenderId: "333960580528",
-  appId: "1:333960580528:web:2fd8e0cf1eab6cdd909a75"
+  apiKey: "AIzaSyBRJkkuMojNk0NDjZiLAW76_nL-3XcG7Jc",
+    authDomain: "dsa-based-quize-applicat-90394.firebaseapp.com",
+    projectId: "dsa-based-quize-applicat-90394",
+    storageBucket: "dsa-based-quize-applicat-90394.firebasestorage.app",
+    messagingSenderId: "934060030519",
+    appId: "1:934060030519:web:3b54f93b794819602b9db2"
 };
 
 firebase.initializeApp(firebaseConfig);
